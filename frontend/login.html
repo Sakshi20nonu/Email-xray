@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Welcome back | NEXUS</title>
+	<style>
+		:root {
+			color-scheme: dark;
+			--navy: #07162f;
+			--blue: #1769aa;
+			--cyan: #38bdf8;
+			--ice: #edfaff;
+			--muted: #829bb4;
+		}
+
+		* {
+			box-sizing: border-box;
+		}
+
+		body {
+			min-height: 100vh;
+			margin: 0;
+			padding: 24px;
+			display: grid;
+			place-items: center;
+			background:
+				radial-gradient(circle at 15% 15%, #1684c4 0, transparent 34%),
+				linear-gradient(135deg, #020817, #07162f 55%, #0a2850);
+			color: var(--navy);
+			font-family: Arial, sans-serif;
+		}
+
+		.login-card {
+			width: min(100%, 980px);
+			min-height: 600px;
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			overflow: hidden;
+			border-radius: 24px;
+			background: var(--ice);
+			box-shadow: 0 28px 80px #020817c9, 0 0 50px #38bdf820;
+		}
+
+		.welcome-panel {
+			position: relative;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+			padding: 42px;
+			color: #effaff;
+			background:
+				linear-gradient(180deg, #07162fe8, #07162f55),
+				url("https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=1200&q=85") center/cover;
+		}
+
+		.brand {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			font-size: 14px;
+			font-weight: 700;
+			letter-spacing: 0.18em;
+		}
+
+		.brand-mark {
+			width: 38px;
+			height: 38px;
+			display: grid;
+			place-items: center;
+			border: 1px solid #38bdf880;
+			border-radius: 50%;
+			color: #7dd3fc;
+			box-shadow: 0 0 18px #38bdf840;
+			font-size: 20px;
+		}
+
+		.eyebrow {
+			margin: 0 0 12px;
+			color: #7dd3fc;
+			font-size: 12px;
+			font-weight: 700;
+			letter-spacing: 0.12em;
+			text-transform: uppercase;
+		}
+
+		.welcome-copy h1 {
+			margin: 0 0 16px;
+			font-family: Georgia, serif;
+			font-size: clamp(36px, 5vw, 54px);
+			font-weight: 400;
+			line-height: 1.08;
+		}
+
+		.welcome-copy p:last-child {
+			margin: 0;
+			color: #d9f2ff;
+			line-height: 1.7;
+		}
+
+		.photo-note {
+			margin: 0;
+			color: #bcecffb3;
+			font-size: 12px;
+		}
+
+		.form-panel {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: 52px clamp(28px, 6vw, 70px);
+		}
+
+		.form-content {
+			width: 100%;
+			max-width: 360px;
+		}
+
+		.form-content h2 {
+			margin: 0 0 8px;
+			font-family: Georgia, serif;
+			font-size: 34px;
+			font-weight: 400;
+		}
+
+		.subheading {
+			margin: 0 0 32px;
+			color: var(--muted);
+			font-size: 14px;
+		}
+
+		.field {
+			margin-bottom: 20px;
+		}
+
+		label {
+			display: block;
+			margin-bottom: 8px;
+			font-size: 13px;
+			font-weight: 600;
+		}
+
+		input {
+			width: 100%;
+			height: 48px;
+			padding: 0 14px;
+			border: 1px solid #bed8e8;
+			border-radius: 9px;
+			outline: none;
+			background: #f8fdff;
+			color: var(--navy);
+			font: inherit;
+			transition: border-color 0.2s, box-shadow 0.2s;
+		}
+
+		input::placeholder {
+			color: #91aabd;
+		}
+
+		input:focus {
+			border-color: var(--cyan);
+			box-shadow: 0 0 0 3px #38bdf824;
+		}
+
+		.form-options {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 12px;
+			margin: 2px 0 24px;
+			font-size: 12px;
+		}
+
+		.remember {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			margin: 0;
+			color: var(--muted);
+		}
+
+		.remember input {
+			width: 15px;
+			height: 15px;
+			margin: 0;
+			accent-color: var(--blue);
+		}
+
+		a {
+			color: var(--blue);
+			font-weight: 600;
+			text-decoration: none;
+		}
+
+		a:hover {
+			text-decoration: underline;
+		}
+
+		.submit-button {
+			width: 100%;
+			height: 50px;
+			border: 0;
+			border-radius: 9px;
+			background: linear-gradient(135deg, #1769aa, #0284c7);
+			color: white;
+			cursor: pointer;
+			font: inherit;
+			font-weight: 600;
+			transition: background 0.2s, transform 0.2s;
+		}
+
+		.submit-button:hover {
+			transform: translateY(-1px);
+			background: linear-gradient(135deg, #0284c7, #38bdf8);
+			box-shadow: 0 8px 24px #38bdf830;
+		}
+
+		.signup {
+			margin: 24px 0 0;
+			color: var(--muted);
+			text-align: center;
+			font-size: 13px;
+		}
+
+		@media (max-width: 700px) {
+			body {
+				padding: 16px;
+			}
+
+			.login-card {
+				grid-template-columns: 1fr;
+				min-height: auto;
+			}
+
+			.welcome-panel {
+				min-height: 230px;
+				padding: 26px;
+			}
+
+			.welcome-copy {
+				margin-top: 40px;
+			}
+
+			.welcome-copy h1 {
+				font-size: 36px;
+			}
+
+			.welcome-copy p:last-child,
+			.photo-note {
+				display: none;
+			}
+
+			.form-panel {
+				padding: 38px 26px;
+			}
+		}
+	</style>
+</head>
+<body>
+	<main class="login-card">
+		<section class="welcome-panel" aria-label="Email-Xray welcome">
+			<div class="brand"><span class="brand-mark" aria-hidden="true">⌁</span> Email-Xray</div>
+			<div class="welcome-copy">
+				<p class="eyebrow">Connected. Secure. Ready.</p>
+				<h1>Your next<br>connection awaits.</h1>
+				<p>Sign in to access your workspace, tools, and digital world.</p>
+			</div>
+			<p class="photo-note">Built for focus, speed, and discovery.</p>
+		</section>
+
+		<section class="form-panel" aria-labelledby="login-title">
+			<div class="form-content">
+				<h2 id="login-title">Welcome back</h2>
+				<p class="subheading">Sign in to your Email-Xray account.</p>
+				<form action="#" method="post">
+					<div class="field">
+						<label for="email">Email address</label>
+						<input id="email" name="email" type="email" placeholder="you@example.com" autocomplete="email" required>
+					</div>
+					<div class="field">
+						<label for="password">Password</label>
+						<input id="password" name="password" type="password" placeholder="Enter your password" autocomplete="current-password" required>
+					</div>
+					<div class="form-options">
+						<label class="remember"><input type="checkbox" name="remember"> Remember me</label>
+						<a href="#forgot-password">Forgot password?</a>
+					</div>
+					<button class="submit-button" type="submit">Sign in</button>
+				</form>
+				<p class="signup">New to the network? <a href="#create-account">Create an account</a></p>
+			</div>
+		</section>
+	</main>
+</body>
+</html>
