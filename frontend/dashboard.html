@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Email X-Ray — Cyber Dashboard</title>
+  <style>
+    :root {
+      --bg: #06111f;
+      --panel: #0b1929;
+      --panel-2: #102238;
+      --line: #173c5d;
+      --blue: #36b8ff;
+      --cyan: #64d7ff;
+      --green: #42d8a1;
+      --yellow: #ffc857;
+      --red: #ff6b81;
+      --text: #edf7ff;
+      --muted: #82a1b9;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 82% 12%, rgba(31, 143, 209, .12), transparent 24rem),
+        linear-gradient(135deg, #071522 0%, #06111f 58%, #081a2b 100%);
+    }
+
+    .app { display: grid; grid-template-columns: 220px minmax(0, 1fr); min-height: 100vh; }
+
+    aside {
+      border-right: 1px solid var(--line);
+      background: rgba(6, 19, 33, .82);
+      padding: 26px 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      margin: 0 8px 38px;
+      font-weight: 800;
+      letter-spacing: .3px;
+    }
+
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      border: 1px solid var(--blue);
+      border-radius: 10px;
+      color: var(--cyan);
+      box-shadow: inset 0 0 16px rgba(54,184,255,.14), 0 0 18px rgba(54,184,255,.08);
+    }
+
+    nav { display: grid; gap: 8px; }
+
+    nav a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-height: 46px;
+      padding: 0 14px;
+      color: var(--muted);
+      text-decoration: none;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    nav a.active {
+      color: var(--text);
+      border-color: rgba(54,184,255,.28);
+      background: linear-gradient(90deg, rgba(54,184,255,.15), rgba(54,184,255,.03));
+      box-shadow: inset 3px 0 var(--blue);
+    }
+
+    nav svg { width: 18px; height: 18px; }
+
+    main { padding: 28px 34px 38px; overflow: hidden; }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 26px;
+    }
+
+    .topbar h1 { margin: 0 0 6px; font-size: 26px; }
+    .topbar p { margin: 0; color: var(--muted); font-size: 13px; }
+
+    .profile { display: flex; align-items: center; gap: 10px; }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 10px var(--green); }
+    .avatar { width: 38px; height: 38px; display: grid; place-items: center; border-radius: 50%; background: #15324a; border: 1px solid #2a668e; font-size: 12px; }
+
+    .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 14px; }
+
+    .card, .chart-card, .activity-card {
+      background: linear-gradient(145deg, rgba(15,37,58,.96), rgba(8,25,42,.96));
+      border: 1px solid var(--line);
+      border-radius: 10px;
+    }
+
+    .metric { padding: 18px; min-height: 112px; }
+    .metric-head { display: flex; justify-content: space-between; align-items: center; color: var(--muted); font-size: 12px; }
+    .metric-icon { width: 28px; height: 28px; display: grid; place-items: center; border-radius: 6px; background: rgba(54,184,255,.09); color: var(--cyan); }
+    .metric-value { margin-top: 13px; font-size: 28px; font-weight: 750; }
+    .metric-change { margin-top: 6px; color: var(--muted); font-size: 11px; }
+    .metric-change strong { color: var(--green); }
+
+    .content-grid { display: grid; grid-template-columns: 1.55fr .85fr; gap: 14px; }
+
+    .chart-card { min-height: 295px; padding: 20px 20px 12px; }
+    .card-head { display: flex; justify-content: space-between; align-items: flex-start; }
+    .card-head h2 { margin: 0 0 5px; font-size: 15px; }
+    .card-head span { color: var(--muted); font-size: 11px; }
+
+    .chart-wrap { position: relative; height: 225px; margin-top: 12px; }
+    .chart-wrap svg { width: 100%; height: 100%; }
+
+    .activity-card { padding: 20px; }
+    .threat-score { display: flex; align-items: center; gap: 16px; margin: 18px 0 16px; }
+
+    .ring {
+      width: 82px;
+      height: 82px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: radial-gradient(circle closest-side, #0c1d2d 73%, transparent 74%), conic-gradient(var(--yellow) 0 72%, #1c3a51 72% 100%);
+    }
+
+    .ring span { font-size: 22px; font-weight: 800; }
+    .threat-score h3 { margin: 0 0 5px; font-size: 20px; }
+    .threat-score p { margin: 0; color: var(--muted); font-size: 12px; }
+
+    .risk-list { display: grid; gap: 12px; }
+    .risk-row { display: grid; grid-template-columns: 74px 1fr 38px; align-items: center; gap: 8px; font-size: 11px; color: var(--muted); }
+    .bar { height: 5px; border-radius: 5px; background: #1a3850; overflow: hidden; }
+    .bar i { display: block; height: 100%; border-radius: 5px; background: var(--blue); }
+
+    .bottom-grid { display: grid; grid-template-columns: 1.55fr .85fr; gap: 14px; margin-top: 14px; }
+    .table-card { padding: 18px 20px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 12px; }
+    th { text-align: left; color: var(--muted); font-weight: 500; padding: 8px 6px; border-bottom: 1px solid var(--line); }
+    td { padding: 11px 6px; border-bottom: 1px solid rgba(23,60,93,.55); }
+    .tag { display: inline-block; padding: 4px 8px; border-radius: 20px; font-size: 10px; }
+    .safe { color: var(--green); background: rgba(66,216,161,.09); }
+    .warn { color: var(--yellow); background: rgba(255,200,87,.09); }
+    .danger { color: var(--red); background: rgba(255,107,129,.09); }
+
+    .breakdown { padding: 18px 20px; }
+    .breakdown-row { display: flex; align-items: center; justify-content: space-between; margin-top: 16px; font-size: 12px; }
+    .breakdown-label { display: flex; align-items: center; gap: 9px; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; }
+
+    @media (max-width: 1050px) {
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .content-grid, .bottom-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 720px) {
+      .app { grid-template-columns: 68px 1fr; }
+      aside { padding: 20px 10px; }
+      .brand { margin-inline: 5px; }
+      .brand span, nav a span { display: none; }
+      nav a { justify-content: center; padding: 0; }
+      main { padding: 22px 16px; }
+      .metrics { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside>
+      <div class="brand">
+        <div class="brand-mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 6.5 12 2l9 4.5v7L12 18l-9-4.5v-7Z"/><path d="m3 6.5 9 4.5 9-4.5M12 11v7"/></svg>
+        </div>
+        <span>Email X-Ray</span>
+      </div>
+      <nav>
+        <a class="active" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Dashboard</span></a>
+        <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg><span>Inbox Analysis</span></a>
+        <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3 4 6v5c0 5 3.4 8.7 8 10 4.6-1.3 8-5 8-10V6l-8-3Z"/><path d="m9 12 2 2 4-4"/></svg><span>Threat Monitor</span></a>
+        <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-1.8 1.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-2.6V20a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L7.6 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 6.4 14H6v-2.6h.4A1.7 1.7 0 0 0 8 10.4a1.7 1.7 0 0 0-.3-1.9L7.6 8l1.8-1.8.1.1a1.7 1.7 0 0 0 1.9.3A1.7 1.7 0 0 0 12.4 5v-.2H15V5a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 8l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2V14H21a1.7 1.7 0 0 0-1.6 1Z"/></svg><span>Settings</span></a>
+      </nav>
+    </aside>
+
+    <main>
+      <header class="topbar">
+        <div>
+          <h1>Security Overview</h1>
+          <p>Real-time email threat intelligence</p>
+        </div>
+        <div class="profile">
+          <span class="status-dot"></span>
+          <span style="font-size:12px;color:var(--muted)">Systems operational</span>
+          <div class="avatar">MX</div>
+        </div>
+      </header>
+
+      <section class="metrics">
+        <article class="card metric"><div class="metric-head"><span>Emails Analyzed</span><div class="metric-icon">↗</div></div><div class="metric-value">12,847</div><div class="metric-change"><strong>+8.2%</strong> from last week</div></article>
+        <article class="card metric"><div class="metric-head"><span>Threats Detected</span><div class="metric-icon" style="color:var(--red)">⚠</div></div><div class="metric-value">284</div><div class="metric-change"><strong style="color:var(--green)">-12.4%</strong> from last week</div></article>
+        <article class="card metric"><div class="metric-head"><span>Blocked Emails</span><div class="metric-icon">◆</div></div><div class="metric-value">169</div><div class="metric-change"><strong style="color:var(--red)">+3.1%</strong> from last week</div></article>
+        <article class="card metric"><div class="metric-head"><span>Risk Score</span><div class="metric-icon" style="color:var(--yellow)">◎</div></div><div class="metric-value">72<span style="font-size:12px;color:var(--muted)"> / 100</span></div><div class="metric-change">Moderate risk level</div></article>
+      </section>
+
+      <section class="content-grid">
+        <article class="chart-card">
+          <div class="card-head"><div><h2>Email Analysis Activity</h2><span>Last 7 days</span></div><span style="color:var(--cyan)">● Live</span></div>
+          <div class="chart-wrap">
+            <svg viewBox="0 0 700 220" preserveAspectRatio="none">
+              <g stroke="#173c5d" stroke-width="1"><line x1="45" y1="20" x2="680" y2="20"/><line x1="45" y1="68" x2="680" y2="68"/><line x1="45" y1="116" x2="680" y2="116"/><line x1="45" y1="164" x2="680" y2="164"/><line x1="45" y1="212" x2="680" y2="212"/></g>
+              <g fill="#82a1b9" font-size="10"><text x="12" y="24">2K</text><text x="12" y="72">1.5K</text><text x="18" y="120">1K</text><text x="24" y="168">500</text><text x="30" y="216">0</text><text x="55" y="218">Mon</text><text x="158" y="218">Tue</text><text x="260" y="218">Wed</text><text x="362" y="218">Thu</text><text x="464" y="218">Fri</text><text x="566" y="218">Sat</text><text x="662" y="218">Sun</text></g>
+              <defs><linearGradient id="area" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#36b8ff" stop-opacity=".28"/><stop offset="1" stop-color="#36b8ff" stop-opacity="0"/></linearGradient></defs>
+              <path d="M55 170 C100 160 130 145 155 150 S220 118 260 128 S315 92 360 102 S420 70 465 82 S520 48 565 60 S620 78 670 42 L670 212 L55 212 Z" fill="url(#area)"/>
+              <path d="M55 170 C100 160 130 145 155 150 S220 118 260 128 S315 92 360 102 S420 70 465 82 S520 48 565 60 S620 78 670 42" fill="none" stroke="#36b8ff" stroke-width="3"/>
+              <g fill="#36b8ff"><circle cx="55" cy="170" r="3"/><circle cx="155" cy="150" r="3"/><circle cx="260" cy="128" r="3"/><circle cx="360" cy="102" r="3"/><circle cx="465" cy="82" r="3"/><circle cx="565" cy="60" r="3"/><circle cx="670" cy="42" r="3"/></g>
+            </svg>
+          </div>
+        </article>
+
+        <article class="activity-card">
+          <div class="card-head"><div><h2>Threat Risk</h2><span>Current security posture</span></div></div>
+          <div class="threat-score"><div class="ring"><span>72</span></div><div><h3>Moderate</h3><p>Action recommended</p></div></div>
+          <div class="risk-list">
+            <div class="risk-row"><span>Phishing</span><div class="bar"><i style="width:78%;background:var(--red)"></i></div><span>78%</span></div>
+            <div class="risk-row"><span>Malware</span><div class="bar"><i style="width:46%;background:var(--yellow)"></i></div><span>46%</span></div>
+            <div class="risk-row"><span>Spam</span><div class="bar"><i style="width:62%;background:var(--cyan)"></i></div><span>62%</span></div>
+            <div class="risk-row"><span>Suspicious</span><div class="bar"><i style="width:34%;background:var(--green)"></i></div><span>34%</span></div>
+          </div>
+        </article>
+      </section>
+
+      <section class="bottom-grid">
+        <article class="card table-card">
+          <div class="card-head"><div><h2>Recent Detections</h2><span>Latest analyzed messages</span></div></div>
+          <table>
+            <thead><tr><th>Sender</th><th>Subject</th><th>Time</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>billing@quickpay.co</td><td>Urgent invoice payment</td><td>2m ago</td><td><span class="tag danger">Blocked</span></td></tr>
+              <tr><td>team@northstar.io</td><td>Quarterly report access</td><td>18m ago</td><td><span class="tag safe">Clean</span></td></tr>
+              <tr><td>security@verify-now.net</td><td>Password reset required</td><td>42m ago</td><td><span class="tag warn">Review</span></td></tr>
+            </tbody>
+          </table>
+        </article>
+
+        <article class="card breakdown">
+          <div class="card-head"><div><h2>Threat Breakdown</h2><span>This month</span></div></div>
+          <div class="breakdown-row"><div class="breakdown-label"><i class="dot" style="background:var(--red)"></i>Phishing</div><strong>112</strong></div>
+          <div class="breakdown-row"><div class="breakdown-label"><i class="dot" style="background:var(--yellow)"></i>Malware</div><strong>68</strong></div>
+          <div class="breakdown-row"><div class="breakdown-label"><i class="dot" style="background:var(--cyan)"></i>Spam</div><strong>54</strong></div>
+          <div class="breakdown-row"><div class="breakdown-label"><i class="dot" style="background:var(--green)"></i>Other</div><strong>50</strong></div>
+        </article>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
