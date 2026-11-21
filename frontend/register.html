@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="theme-color" content="#071322">
+	<title>Create account | EmailX-Ray</title>
+	<style>
+		:root{color-scheme:dark;--bg:#071322;--panel:#0d1e32;--line:rgba(123,184,255,.16);--muted:#8da6bf;--text:#edf6ff;--blue:#39a9ff;--cyan:#54e4f2}
+		*{box-sizing:border-box}
+		body{min-height:100vh;margin:0;display:grid;place-items:center;padding:30px 16px;color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;background:radial-gradient(ellipse at 12% 18%,rgba(19,113,197,.2),transparent 38%),radial-gradient(ellipse at 88% 82%,rgba(13,201,219,.12),transparent 35%),var(--bg)}
+		body:before{position:fixed;inset:0;z-index:-1;background-image:linear-gradient(rgba(107,163,211,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(107,163,211,.035) 1px,transparent 1px);background-size:46px 46px;content:""}
+		.layout{width:min(100%,960px);display:grid;grid-template-columns:1fr 1fr;overflow:hidden;border:1px solid var(--line);border-radius:22px;background:rgba(8,20,35,.82);box-shadow:0 28px 90px #0007,0 0 55px #1e91ff14;backdrop-filter:blur(18px)}
+		.intro{display:flex;flex-direction:column;justify-content:space-between;min-height:630px;padding:40px;border-right:1px solid var(--line);background:linear-gradient(145deg,rgba(17,53,86,.8),rgba(8,25,43,.58))}
+		.brand{display:flex;align-items:center;gap:12px;color:var(--text);font-size:18px;font-weight:750;text-decoration:none}.mark{display:grid;width:40px;height:40px;place-items:center;border:1px solid #54e4f260;border-radius:12px;color:var(--cyan);background:#2aac231f}.mark svg{width:22px}.brand-name span{color:var(--cyan)}
+		.copy{max-width:380px;margin:auto 0;padding:52px 0}.eyebrow{display:flex;align-items:center;gap:9px;margin-bottom:20px;color:#8fdcff;font-size:11px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase}.dot{width:7px;height:7px;border-radius:50%;background:#45e6c1;box-shadow:0 0 12px #45e6c1}h1{margin:0 0 17px;font-size:clamp(34px,4vw,46px);line-height:1.12;letter-spacing:-1.6px}h1 em{color:var(--cyan);font-style:normal}.copy p{margin:0;color:#a4bad0;font-size:15px;line-height:1.75}
+		.feature{display:flex;align-items:center;gap:13px;padding:15px;border:1px solid #7cbcec21;border-radius:13px;background:#05121f59}.feature-icon{display:grid;width:36px;height:36px;place-items:center;border-radius:10px;color:var(--cyan);background:#3dbee21f}.feature-icon svg{width:19px}.feature strong{display:block;margin-bottom:3px;font-size:12px}.feature small{color:var(--muted);font-size:11px}
+		.form{padding:46px 44px}.heading{margin-bottom:26px}.heading h2{margin:0 0 8px;font-size:25px;letter-spacing:-.6px}.heading p{margin:0;color:var(--muted);font-size:13px}.fields{display:grid;gap:16px}.field label{display:block;margin-bottom:8px;color:#cfdeed;font-size:12px;font-weight:600}.field input{width:100%;height:45px;padding:0 13px;outline:none;border:1px solid #81a9cd33;border-radius:9px;color:var(--text);background:#05101da6;font:inherit;font-size:13px}.field input::placeholder{color:#627b94}.field input:focus{border-color:var(--blue);box-shadow:0 0 0 3px #39a9ff21}.hint{margin:7px 0 0;color:#7892aa;font-size:11px}
+		.terms{display:flex;align-items:flex-start;gap:9px;margin:19px 0;color:#9bb0c5;font-size:11px;line-height:1.55}.terms input{width:14px;height:14px;flex:0 0 auto;margin:1px 0 0;accent-color:var(--blue)}a{color:#70ceff;text-decoration:none}a:hover{color:#a8e7ff;text-decoration:underline}.submit{width:100%;height:47px;border:0;border-radius:9px;color:#041421;background:linear-gradient(100deg,#39a9ff,#55e0e9);box-shadow:0 8px 24px #23a5e633;cursor:pointer;font:inherit;font-size:13px;font-weight:750}.submit:hover{filter:brightness(1.08)}.signin{margin:20px 0 0;color:var(--muted);text-align:center;font-size:12px}
+		@media(max-width:740px){.layout{max-width:500px;grid-template-columns:1fr}.intro{min-height:auto;padding:26px 28px 20px;border-right:0;border-bottom:1px solid var(--line)}.copy{padding:32px 0 24px}.copy h1{font-size:34px}.feature{display:none}.form{padding:30px 28px 34px}}
+		@media(max-width:390px){body{padding:12px}.intro,.form{padding-right:21px;padding-left:21px}}
+	</style>
+</head>
+<body>
+	<main class="layout">
+		<section class="intro" aria-label="About EmailX-Ray">
+			<a class="brand" href="#" aria-label="EmailX-Ray home"><span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M3 7.5 12 14l9-6.5M5 5h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="m17.5 3.5 1 2m2.5.5-2 .5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span><span class="brand-name">EmailX<span>-Ray</span></span></a>
+			<div class="copy"><div class="eyebrow"><span class="dot"></span>Email intelligence, in focus</div><h1>See what's hiding in your <em>inbox.</em></h1><p>Create your account to get started with a clearer, smarter view of your email. Your next layer of insight is just a few details away.</p></div>
+			<div class="feature"><span class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3 19 6v5c0 4.6-2.9 8.1-7 10-4.1-1.9-7-5.4-7-10V6l7-3Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><strong>Built with privacy in mind</strong><small>Your email insights stay yours.</small></span></div>
+		</section>
+		<section class="form" aria-labelledby="form-title">
+			<header class="heading"><h2 id="form-title">Create your account</h2><p>Join EmailX-Ray. It only takes a minute.</p></header>
+			<form action="#" method="post">
+				<div class="fields">
+					<div class="field"><label for="name">Full name</label><input id="name" name="name" type="text" placeholder="Alex Morgan" autocomplete="name" required></div>
+					<div class="field"><label for="email">Email address</label><input id="email" name="email" type="email" placeholder="you@example.com" autocomplete="email" required></div>
+					<div class="field"><label for="password">Password</label><input id="password" name="password" type="password" placeholder="Create a strong password" autocomplete="new-password" minlength="8" required><p class="hint">Use at least 8 characters.</p></div>
+					<div class="field"><label for="confirm-password">Confirm password</label><input id="confirm-password" name="confirm-password" type="password" placeholder="Enter your password again" autocomplete="new-password" minlength="8" required></div>
+				</div>
+				<label class="terms"><input type="checkbox" name="terms" required><span>I agree to the <a href="#terms">Terms of Service</a> and <a href="#privacy">Privacy Policy</a>.</span></label>
+				<button class="submit" type="submit">Create account <span aria-hidden="true">→</span></button>
+			</form>
+			<p class="signin">Already have an account? <a href="login.html">Sign in</a></p>
+		</section>
+	</main>
+</body>
+</html>
