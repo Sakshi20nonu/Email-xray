@@ -219,20 +219,6 @@
 			<section class="cta-section"><div class="container"><div class="cta-card"><div><h2>Make your next email easier to understand.</h2><p>Start exploring a more informed way to review your inbox.</p></div><a class="btn" href="#register">Get Started <span aria-hidden="true">→</span></a></div></div></section>
 		</div>
 
-		<section class="auth-view" id="auth-view" hidden aria-live="polite">
-			<div class="auth-card" id="login-panel" hidden>
-				<a class="brand" href="#home"><span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3.5 6.5h17v11h-17z" stroke="currentColor" stroke-width="1.8"/><path d="m4 7 8 6 8-6" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span>EmailX-Ray</a>
-				<h1>Welcome back</h1><p>Sign in to continue to your email analysis dashboard.</p>
-				<form class="auth-form"><div class="field"><label for="login-email">Email address</label><input id="login-email" type="email" placeholder="you@example.com" autocomplete="email" required></div><div class="field"><label for="login-password">Password</label><input id="login-password" type="password" placeholder="Enter your password" autocomplete="current-password" required></div><button class="btn btn-primary" type="submit">Login</button><div class="form-message" role="status">Demo form submitted. Connect your authentication service to sign in.</div></form>
-				<p class="auth-switch">New to EmailX-Ray? <a href="#register">Create an account</a></p><a class="auth-back" href="#home">← Back to homepage</a>
-			</div>
-			<div class="auth-card" id="register-panel" hidden>
-				<a class="brand" href="#home"><span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3.5 6.5h17v11h-17z" stroke="currentColor" stroke-width="1.8"/><path d="m4 7 8 6 8-6" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span>EmailX-Ray</a>
-				<h1>Create your account</h1><p>Get started with a clearer view of your emails.</p>
-				<form class="auth-form"><div class="field"><label for="register-name">Full name</label><input id="register-name" type="text" placeholder="Your name" autocomplete="name" required></div><div class="field"><label for="register-email">Email address</label><input id="register-email" type="email" placeholder="you@example.com" autocomplete="email" required></div><div class="field"><label for="register-password">Password</label><input id="register-password" type="password" placeholder="Create a password" autocomplete="new-password" minlength="8" required></div><button class="btn btn-primary" type="submit">Create Account</button><div class="form-message" role="status">Demo form submitted. Connect your authentication service to create an account.</div></form>
-				<p class="auth-switch">Already have an account? <a href="#login">Login</a></p><a class="auth-back" href="#home">← Back to homepage</a>
-			</div>
-		</section>
 	</main>
 
 	<footer class="site-footer" id="contact">
@@ -245,13 +231,9 @@
 	</footer>
 	<script>
 		(()=>{
-			const landing=document.getElementById('landing-view'),authView=document.getElementById('auth-view'),loginPanel=document.getElementById('login-panel'),registerPanel=document.getElementById('register-panel');
 			const menu=document.querySelector('.menu-toggle'),navLinks=document.querySelector('.nav-links');
-			function renderRoute(){const route=location.hash.slice(1).toLowerCase();const auth=route==='login'||route==='register';landing.hidden=auth;authView.hidden=!auth;loginPanel.hidden=route!=='login';registerPanel.hidden=route!=='register';document.querySelector('.site-footer').hidden=auth;document.title=auth?(route==='login'?'Login':'Register')+' | EmailX-Ray':'EmailX-Ray — Email Analysis System';if(auth)window.scrollTo(0,0)}
-			window.addEventListener('hashchange',renderRoute);renderRoute();
 			menu.addEventListener('click',()=>{const open=navLinks.classList.toggle('open');menu.setAttribute('aria-expanded',String(open));menu.textContent=open?'×':'☰'});
 			document.querySelectorAll('.nav-links a').forEach(link=>link.addEventListener('click',()=>{navLinks.classList.remove('open');menu.setAttribute('aria-expanded','false');menu.textContent='☰'}));
-			document.querySelectorAll('.auth-form').forEach(form=>form.addEventListener('submit',event=>{event.preventDefault();form.querySelector('.form-message').style.display='block'}));
 		})();
 	</script>
 </body>
