@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Analysis History | EmailX-Ray</title>
+<style>
+:root{--bg:#071321;--panel:#0d2033;--line:#1d3b55;--text:#e8f4ff;--muted:#91a9bd;--blue:#36b8ff;--green:#42d8a1;--yellow:#ffc857;--red:#ff6b81}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:linear-gradient(135deg,#06111f,#0a1c2e 60%,#08243b);color:var(--text);font:15px Arial,sans-serif}
+header{min-height:72px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:16px 6%;background:#081827;gap:15px;flex-wrap:wrap}.brand{font-size:20px;font-weight:800;color:#65dcff;letter-spacing:1px}nav{display:flex;gap:22px;flex-wrap:wrap}nav a{color:var(--muted);text-decoration:none}nav a:hover,nav a.active{color:#65dcff}
+main{max-width:1150px;margin:40px auto;padding:0 22px}.heading{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;margin-bottom:22px}.heading h1{margin:0 0 8px;font-size:30px}.heading p{margin:0;color:var(--muted)}
+button{border:1px solid var(--line);border-radius:8px;padding:10px 14px;background:#10283e;color:var(--text);cursor:pointer}button:hover{border-color:var(--blue);color:var(--blue)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;overflow:hidden}.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:680px}th,td{text-align:left;padding:14px 12px;border-bottom:1px solid var(--line);font-size:13px}th{color:var(--muted);font-weight:600}td{color:#d8e8f5}.tag{display:inline-block;padding:5px 9px;border-radius:20px;font-size:11px}.safe{background:#42d8a11a;color:var(--green)}.warn{background:#ffc8571a;color:var(--yellow)}.danger{background:#ff6b811a;color:var(--red)}.empty{text-align:center;color:var(--muted);padding:28px}.status{color:var(--muted);font-size:13px;margin:14px 0 0}
+</style>
+</head>
+<body>
+<header><div class="brand">✉ EmailX-Ray</div><nav><a href="/dashboard">Dashboard</a><a href="/analyze">Analyze Email</a><a class="active" href="/history">History</a><a href="/profile">Profile</a><a href="#" id="logoutLink">Logout</a></nav></header>
+<main>
+<div class="heading"><div><h1>Analysis History</h1><p>Review emails previously analyzed through your account.</p></div><button id="refreshButton" type="button">Refresh history</button></div>
+<section class="card"><div class="table-wrap"><table><thead><tr><th>ID</th><th>Subject</th><th>Risk Score</th><th>Classification</th><th>Date Analyzed</th></tr></thead><tbody id="historyBody"><tr><td colspan="5" class="empty">Loading history...</td></tr></tbody></table></div><p class="status" id="statusMessage"></p></section>
+</main>
+<script>
+const token=localStorage.getItem("access_token");if(!token)window.location.replace("/login");
+document.getElementById("logoutLink").addEventListener("click",e=>{e.preventDefault();localStorage.removeItem("access_token");localStorage.removeItem("user");sessionStorage.clear();location.href="/login";});
+const body=document.getElementById("historyBody"),status=document.getElementById("statusMessage");
+function cell(row,value){const td=document.createElement("td");td.textContent=value??"—";row.append(td);return td;}
+function riskClass(label,score){if(/high/i.test(label)||Number(score)>=60)return"danger";if(/suspicious|medium/i.test(label)||Number(score)>=30)return"warn";return"safe";}
+async function loadHistory(){
+ body.innerHTML='<tr><td colspan="5" class="empty">Loading history...</td></tr>';status.textContent="";
+ try{
+  const response=await fetch("/api/analysis/history",{headers:{"Authorization":`Bearer ${token}`}});
+  const data=await response.json();
+  if(!response.ok){if(response.status===401||response.status===403){localStorage.removeItem("access_token");location.replace("/login");return;}throw new Error(data.detail||"Unable to load history.");}
+  const records=Array.isArray(data)?data:(data.analyses||data.history||data.results||[]);
+  body.replaceChildren();
+  if(!records.length){body.innerHTML='<tr><td colspan="5" class="empty">No email analyses found yet. <a href="/analyze" style="color:#36b8ff">Analyze your first email</a>.</td></tr>';return;}
+  records.forEach(item=>{
+   const tr=document.createElement("tr");cell(tr,item.id);cell(tr,item.subject||"No subject");cell(tr,`${item.risk_score??0} / 100`);
+   const classification=cell(tr,"");const span=document.createElement("span");span.className="tag "+riskClass(item.classification,item.risk_score);span.textContent=item.classification||"Unknown";classification.append(span);
+   const date=item.created_at?new Date(item.created_at).toLocaleString():"—";cell(tr,date);body.append(tr);
+  });
+  status.textContent=`${records.length} record(s) loaded.`;
+ }catch(error){console.error(error);body.innerHTML='<tr><td colspan="5" class="empty">Could not load history. Please refresh and try again.</td></tr>';status.textContent=error.message;}
+}
+document.getElementById("refreshButton").addEventListener("click",loadHistory);loadHistory();
+</script>
+</body></html>

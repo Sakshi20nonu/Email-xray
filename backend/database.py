@@ -7,9 +7,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 DATABASE_URL = os.getenv(
-    "DATABASE_URL",
-    "mysql+pymysql://root:YOUR_PASSWORD@localhost:3306/emailxray"
-)
+    "DATABASE_URL")
 
 engine = create_engine(
     DATABASE_URL,

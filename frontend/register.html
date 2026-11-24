@@ -30,7 +30,7 @@
 		</section>
 		<section class="form" aria-labelledby="form-title">
 			<header class="heading"><h2 id="form-title">Create your account</h2><p>Join EmailX-Ray. It only takes a minute.</p></header>
-			<form action="#" method="post">
+			<form id="registerForm">
 				<div class="fields">
 					<div class="field"><label for="name">Full name</label><input id="name" name="name" type="text" placeholder="Alex Morgan" autocomplete="name" required></div>
 					<div class="field"><label for="email">Email address</label><input id="email" name="email" type="email" placeholder="you@example.com" autocomplete="email" required></div>
@@ -39,9 +39,125 @@
 				</div>
 				<label class="terms"><input type="checkbox" name="terms" required><span>I agree to the <a href="#terms">Terms of Service</a> and <a href="#privacy">Privacy Policy</a>.</span></label>
 				<button class="submit" type="submit">Create account <span aria-hidden="true">→</span></button>
+				<p id="registerMessage"
+                    role="status"
+                    aria-live="polite"
+                    style="text-align:center; font-size:13px; margin-top:15px;">
+                </p>
 			</form>
-			<p class="signin">Already have an account? <a href="login.html">Sign in</a></p>
+			<p class="signin">Already have an account? <a href="/login">Sign in</a></p>
 		</section>
 	</main>
+	<script>
+
+const registerForm = document.getElementById("registerForm");
+
+registerForm.addEventListener("submit", async function(event) {
+
+    event.preventDefault();
+
+    const name = document.getElementById("name").value.trim();
+
+    const email = document.getElementById("email").value.trim();
+
+    const password = document.getElementById("password").value;
+
+    const confirmPassword =
+        document.getElementById("confirm-password").value;
+
+    const message = document.getElementById("registerMessage");
+
+    const button = registerForm.querySelector(".submit");
+
+    // Check password confirmation
+
+    if (password !== confirmPassword) {
+
+        message.style.color = "#ff6464";
+        message.textContent = "Passwords do not match!";
+
+        return;
+    }
+
+    // Show loading message
+
+    message.style.color = "#54e4f2";
+    message.textContent = "Creating your account...";
+
+    button.disabled = true;
+    button.textContent = "Please wait...";
+
+    try {
+
+        const response = await fetch("/api/users/register", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                name: name,
+                email: email,
+                password: password
+            })
+
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+
+            message.style.color = "#45e6c1";
+
+            message.textContent =
+                "✓ Account created successfully! Redirecting to login...";
+
+            registerForm.reset();
+
+            setTimeout(function() {
+
+                window.location.href = "/login";
+
+            }, 1800);
+
+        }
+
+        else {
+
+            message.style.color = "#ff6464";
+
+            const errorMessage = Array.isArray(result.detail)
+                ? result.detail.map(error => error.msg).join(", ")
+                : result.detail;
+
+            message.textContent =
+                errorMessage || "Registration failed!";
+
+            button.disabled = false;
+            button.textContent = "Create account →";
+
+        }
+
+    }
+
+    catch (error) {
+
+        console.error("Registration error:", error);
+
+        message.style.color = "#ff6464";
+
+        message.textContent =
+            "Server connection failed. Please try again.";
+
+        button.disabled = false;
+        button.textContent = "Create account →";
+
+    }
+
+});
+
+</script>
 </body>
 </html>

@@ -13,9 +13,7 @@ from models import User
 
 
 SECRET_KEY = os.getenv(
-    "SECRET_KEY",
-    "change-this-secret-key-before-deployment"
-)
+    "SECRET_KEY")
 
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60

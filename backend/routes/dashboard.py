@@ -10,7 +10,6 @@ from auth import get_current_user
 
 router = APIRouter(prefix="/api/dashboard", tags=["Dashboard"])
 
-
 @router.get("/stats")
 def dashboard_stats(
     db: Session = Depends(get_db),

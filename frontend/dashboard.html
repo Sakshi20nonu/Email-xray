@@ -278,10 +278,10 @@
 
       <div id="dashboardView">
       <section class="metrics">
-        <article class="card metric"><div class="metric-head"><span>Emails Analyzed</span><div class="metric-icon">↗</div></div><div class="metric-value">12,847</div><div class="metric-change"><strong>+8.2%</strong> from last week</div></article>
-        <article class="card metric"><div class="metric-head"><span>Threats Detected</span><div class="metric-icon" style="color:var(--red)">⚠</div></div><div class="metric-value">284</div><div class="metric-change"><strong style="color:var(--green)">-12.4%</strong> from last week</div></article>
-        <article class="card metric"><div class="metric-head"><span>Blocked Emails</span><div class="metric-icon">◆</div></div><div class="metric-value">169</div><div class="metric-change"><strong style="color:var(--red)">+3.1%</strong> from last week</div></article>
-        <article class="card metric"><div class="metric-head"><span>Risk Score</span><div class="metric-icon" style="color:var(--yellow)">◎</div></div><div class="metric-value">72<span style="font-size:12px;color:var(--muted)"> / 100</span></div><div class="metric-change">Moderate risk level</div></article>
+        <article class="card metric"><div class="metric-head"><span>Emails Analyzed</span><div class="metric-icon">↗</div></div><div class="metric-value" id="totalEmails">0</div></article>
+        <article class="card metric"><div class="metric-head"><span>Threats Detected</span><div class="metric-icon" style="color:var(--red)">⚠</div></div><div class="metric-value" id="threatEmails">0</div></article>
+        <article class="card metric"><div class="metric-head"><span>High-Risk Emails</span><div class="metric-icon">◆</div></div>	<div class="metric-value" id="highRiskEmails">0</div></article>
+        <article class="card metric"><div class="metric-head"><span>Safe Emails</span><div class="metric-icon" style="color:var(--yellow)">◎</div></div><div class="metric-value" id="safeEmails">0</div></article>
       </section>
 
       <section class="card analyser" aria-labelledby="analyser-title">
@@ -527,11 +527,15 @@
     });
 
     document.getElementById('logoutButton').addEventListener('click', () => {
-      localStorage.removeItem('emailXraySession');
-      localStorage.removeItem('emailXrayUser');
-      sessionStorage.clear();
-      window.location.href = 'login.html';
-    });
+
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('user');
+
+    sessionStorage.clear();
+
+    window.location.href = '/login';
+
+});
 
     renderHistory();
 
@@ -599,6 +603,70 @@
     });
 
     loadSettings();
+      // AUTHENTICATION AND DASHBOARD DATA
+
+async function loadDashboard() {
+
+    const token = localStorage.getItem("access_token");
+
+    if (!token) {
+        window.location.href = "/login";
+        return;
+    }
+
+    try {
+
+        const response = await fetch("/api/dashboard/stats", {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        if (!response.ok) {
+            localStorage.removeItem("access_token");
+            localStorage.removeItem("user");
+            window.location.href = "/login";
+            return;
+        }
+
+        const data = await response.json();
+
+        // Update username
+        document.getElementById("profileName").textContent = data.username;
+        document.getElementById("menuProfileName").textContent = data.username;
+
+        // Update avatar initials
+        const initials = data.username
+            .split(" ")
+            .map(word => word[0])
+            .join("")
+            .substring(0, 2)
+            .toUpperCase();
+
+        document.getElementById("profileAvatar").textContent = initials;
+
+        document.querySelector(".profile-menu-head .avatar").textContent = initials;
+
+        // Update statistics
+        document.getElementById("totalEmails").textContent = data.total_emails;
+
+        document.getElementById("threatEmails").textContent =
+            data.suspicious_emails + data.high_risk_emails;
+
+        document.getElementById("highRiskEmails").textContent =
+            data.high_risk_emails;
+
+        document.getElementById("safeEmails").textContent =
+            data.safe_emails;
+
+    }
+
+    catch (error) {
+        console.error("Dashboard error:", error);
+    }
+}
+
+loadDashboard();
   </script>
 </body>
 </html>
