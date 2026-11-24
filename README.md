@@ -102,7 +102,7 @@ cd backend
 Run:
 
 ```bash
-uvicorn main:app --reload
+python -m uvicorn main:app --reload
 ```
 
 ### 9. Open the application
