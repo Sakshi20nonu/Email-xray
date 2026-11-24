@@ -4,10 +4,15 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(BASE_DIR / ".env", override=True)
 
 DATABASE_URL = os.getenv(
     "DATABASE_URL")
+
+print("DATABASE URL LOADED:", DATABASE_URL is not None)
 
 engine = create_engine(
     DATABASE_URL,
